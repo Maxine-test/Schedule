@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>沖繩5天4夜行程表・訂位更新版</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sand:#FBF5E9;
+    --ink:#1E2A32;
+    --sea:#0B4F6C;
+    --coral:#FF6B4A;
+    --foam:#4DAA9C;
+    --d1:#F2994A;
+    --d2:#27A96C;
+    --d3:#2F80ED;
+    --d4:#17A398;
+    --d5:#2C3E50;
+    --line:#E4D9C4;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--sand);
+    color:var(--ink);
+    font-family:'Noto Sans TC','Noto Sans CJK TC',sans-serif;
+    line-height:1.55;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:28px 18px 60px;}
+
+  header.hero{
+    position:relative;
+    padding:38px 26px 30px;
+    border-radius:18px;
+    background:linear-gradient(135deg,var(--sea) 0%,#0d6386 55%,var(--foam) 100%);
+    color:#fff;
+    overflow:hidden;
+    margin-bottom:26px;
+  }
+  header.hero::after{
+    content:"";
+    position:absolute;right:-40px;bottom:-60px;
+    width:220px;height:220px;border-radius:50%;
+    background:radial-gradient(circle at 30% 30%, rgba(255,255,255,.18), transparent 70%);
+  }
+  .eyebrow{
+    font-size:13px;letter-spacing:.14em;font-weight:700;
+    color:#FFE8B8;text-transform:uppercase;margin-bottom:10px;
+  }
+  h1{
+    font-family:'Noto Serif TC','Noto Serif CJK TC',serif;
+    font-weight:900;
+    font-size:clamp(24px,5vw,34px);
+    margin:0 0 8px;
+  }
+  .sub{font-size:14.5px;color:#DDEFEC;max-width:60ch;}
+  .badge-row{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px;}
+  .badge{
+    background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.35);
+    padding:6px 12px;border-radius:999px;
+    font-size:12.5px;font-weight:500;
+  }
+
+  .summary{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:20px 22px;
+    margin-bottom:30px;
+  }
+  .summary h2{
+    font-family:'Noto Serif TC','Noto Serif CJK TC',serif;
+    font-size:18px;margin:0 0 14px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .summary h2 .dot{width:9px;height:9px;border-radius:50%;background:var(--coral);display:inline-block;}
+  .res-grid{display:grid;grid-template-columns:1fr;gap:10px;}
+  @media(min-width:640px){.res-grid{grid-template-columns:1fr 1fr;}}
+  .res-card{
+    border:1px solid var(--line);
+    border-left:5px solid var(--coral);
+    border-radius:10px;
+    padding:12px 14px;
+    background:#FFFDF8;
+  }
+  .res-card.pending{border-left-color:#C9971D;}
+  .res-card .day-tag{
+    font-size:11px;font-weight:700;color:#8a6d3b;
+    background:#FDF0D5;display:inline-block;padding:2px 8px;border-radius:6px;margin-bottom:6px;
+  }
+  .res-card.pending .day-tag{background:#FCEFC7;color:#8a6a10;}
+  .res-card .name{font-weight:700;font-size:15px;margin-bottom:2px;}
+  .res-card .meta{font-size:12.5px;color:#57636B;}
+  .res-card .status{
+    display:inline-block;margin-top:6px;font-size:11.5px;font-weight:700;
+    padding:2px 8px;border-radius:6px;
+  }
+  .status.ok{background:#E4F5EC;color:#1F7A4C;}
+  .status.wait{background:#FCEFC7;color:#8a6a10;}
+
+  .day{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:16px;
+    margin-bottom:22px;
+    overflow:hidden;
+  }
+  .day-head{
+    display:flex;align-items:center;gap:14px;
+    padding:16px 20px;
+    color:#fff;
+  }
+  .day-num{
+    font-family:'Noto Serif TC','Noto Serif CJK TC',serif;
+    font-weight:900;font-size:26px;
+    background:rgba(255,255,255,.2);
+    width:46px;height:46px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .day-title{font-weight:700;font-size:16px;}
+  .day-title .date{font-size:12.5px;font-weight:500;opacity:.9;display:block;margin-top:2px;}
+
+  .day1 .day-head{background:var(--d1);}
+  .day2 .day-head{background:var(--d2);}
+  .day3 .day-head{background:var(--d3);}
+  .day4 .day-head{background:var(--d4);}
+  .day5 .day-head{background:var(--d5);}
+
+  .day-body{display:flex;flex-wrap:wrap;align-items:stretch;}
+  .timeline{padding:14px 20px 18px;flex:1 1 300px;min-width:260px;}
+  .mini-map{
+    flex:0 0 240px;
+    width:240px;
+    padding:14px 10px;
+    border-left:1px dashed var(--line);
+    display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+    gap:6px;
+  }
+  .mini-map .map-label{font-size:11.5px;font-weight:700;color:#8a8072;letter-spacing:.04em;}
+  .route-svg{width:100%;height:auto;max-width:220px;}
+  @media(max-width:640px){
+    .mini-map{border-left:none;border-top:1px dashed var(--line);flex:1 1 100%;width:100%;}
+    .route-svg{max-width:260px;}
+  }
+  .ev{
+    display:grid;
+    grid-template-columns:64px 30px 1fr;
+    gap:2px 12px;
+    padding:10px 0;
+    border-bottom:1px dashed var(--line);
+  }
+  .ev:last-child{border-bottom:none;}
+  .ev .time{font-weight:700;font-size:13px;color:var(--sea);}
+  .ev .icon{font-size:18px;text-align:center;}
+  .ev .content .t{font-weight:700;font-size:14.5px;}
+  .ev .content .d{font-size:12.5px;color:#5b6670;margin-top:2px;}
+  .ev .content .addr{font-size:11.5px;color:#8a7f6a;margin-top:3px;}
+  .ev .content .addr a{color:var(--sea);text-decoration:none;font-weight:600;border-bottom:1px dotted var(--sea);}
+  .ev .content .addr a:hover{text-decoration:none;border-bottom-style:solid;}
+  .ev .content .park{font-size:11.5px;color:#5f7a52;margin-top:3px;background:#F0F6EA;display:inline-block;padding:2px 8px;border-radius:6px;}
+
+  .ev.updated{
+    background:linear-gradient(90deg,#FFF6EF,#fff);
+    border-radius:10px;
+    margin:4px -8px;
+    padding:10px 8px;
+    border-bottom:none;
+  }
+  .ev.updated .content .t{color:#B94A1F;}
+  .tag{
+    display:inline-block;font-size:10.5px;font-weight:700;
+    background:var(--coral);color:#fff;padding:1px 7px;border-radius:5px;
+    margin-left:6px;vertical-align:middle;
+  }
+  .tag.wait{background:#C9971D;}
+  .conf{
+    margin-top:6px;font-size:12px;background:#FBEADD;
+    display:inline-block;padding:3px 9px;border-radius:6px;color:#8a4b25;
+  }
+
+  footer.note{
+    font-size:12.5px;color:#7a6f5c;text-align:center;margin-top:10px;
+  }
+
+  @media print{
+    body{background:#fff;}
+    .wrap{max-width:100%;padding:10px;}
+    .day, .summary, .res-card, header.hero{
+      page-break-inside:avoid;
+      break-inside:avoid;
+    }
+    a{color:inherit;text-decoration:none;}
+  }
+  @page{
+    size:A4;
+    margin:14mm 10mm;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">Okinawa Road Trip · 全家血拼度假版</div>
+    <h1>沖繩 5 天 4 夜自駕行程表</h1>
+    <div class="sub">親子友善 × 購物天堂 × 美食海景一次滿足！本版已依實際訂位結果更新三天晚餐與各日午餐安排。</div>
+    <div class="badge-row">
+      <span class="badge">7/19（日）— 7/23（四）</span>
+      <span class="badge">7 人・7-8 人座休旅車</span>
+      <span class="badge">已訂位晚餐 ×3</span>
+    </div>
+  </header>
+
+  <section class="summary">
+    <h2><span class="dot"></span>訂位與用餐更新總覽</h2>
+    <div class="res-grid">
+      <div class="res-card">
+        <span class="day-tag">DAY1・7/19（日）晚餐</span>
+        <div class="name">島唄 Live 屋台村 Ashibina</div>
+        <div class="meta">晚上 8:00（JST）・7 人・國際通屋台村夜市</div>
+        <span class="status ok">✅ 訂位已確認</span>
+        <div class="meta" style="margin-top:4px;">原訂「沖縄とんかつ小やじ」已改為屋台村夜市體驗</div>
+      </div>
+      <div class="res-card">
+        <span class="day-tag">DAY2・7/20（一）午＋晚餐</span>
+        <div class="name">午餐：iias 周邊美食街／早餐廳　晚餐：牧志市場代客烹調</div>
+        <div class="meta">午餐約 iias 沖縄豐崎購物空檔・晚餐於第一牧志公設市場採買鮮魚後委由 2 樓代客料理</div>
+        <span class="status ok">✅ 已確認</span>
+      </div>
+      <div class="res-card">
+        <span class="day-tag">DAY3・7/21（二）晚餐</span>
+        <div class="name">燒肉きんぐ 那覇久茂地店</div>
+        <div class="meta">19:10・7 人・確認號碼 2151</div>
+        <span class="status ok">✅ 訂位已確認</span>
+      </div>
+      <div class="res-card">
+        <span class="day-tag">DAY3・7/21（二）午餐</span>
+        <div class="name">AEON MALL Rycom 商場內餐廳／美食街</div>
+        <div class="meta">購物行程 13:30–15:30 期間用餐</div>
+        <span class="status ok">✅ 已確認</span>
+      </div>
+      <div class="res-card">
+        <span class="day-tag">DAY4・7/22（三）午餐</span>
+        <div class="name">濱の家（浜の家）海鮮料理</div>
+        <div class="meta">13:00–14:15・鮮蝦丼／熱帶魚料理・思納村泊城 2097</div>
+        <span class="status ok">✅ 已確認</span>
+      </div>
+      <div class="res-card">
+        <span class="day-tag">DAY4・7/22（三）晚餐</span>
+        <div class="name">おきなわ とんかつ食堂 しゃぶ豚屋 久茂地店</div>
+        <div class="meta">晚上 7:00（PM）・7 人・Reservation ID RK6C5V</div>
+        <span class="status ok">✅ 訂位已確認</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- DAY 1 -->
+  <div class="day day1">
+    <div class="day-head">
+      <div class="day-num">1</div>
+      <div class="day-title">抵達那覇・輕鬆逛街夜生活<span class="date">7/19（日）</span></div>
+    </div>
+    <div class="day-body">
+    <div class="timeline">
+      <div class="ev"><div class="time">17:35</div><div class="icon">✈️</div><div class="content"><div class="t">那覇機場</div><div class="d">辦理入境，提領行李</div><div class="addr">📍 沖縄県那覇市鏡水150 ・ <a href="https://www.google.com/maps/search/?api=1&query=Naha%20Airport" target="_blank" rel="noopener">Google Maps 搜尋</a></div></div></div>
+      <div class="ev"><div class="time">18:30</div><div class="icon">🚗</div><div class="content"><div class="t">租車公司（小祿金城店）</div><div class="d">領取 7–8 人座車輛</div><div class="addr">📍 沖縄県那覇市金城1丁目12-27 ・ <a href="https://www.google.com/maps/search/?api=1&query=Okinawa%20Rent%20A%20Car%20Kanagusuku" target="_blank" rel="noopener">Google Maps 搜尋</a></div></div></div>
+      <div class="ev"><div class="time">19:15</div><div class="icon">🏨</div><div class="content"><div class="t">Okinawa Harborview Hotel</div><div class="d">辦理入住，放置行李</div><div class="addr">📍 沖縄県那覇市泉崎2-46 ・ <a href="https://www.google.com/maps/search/?api=1&query=Okinawa%20Harborview%20Hotel" target="_blank" rel="noopener">Google Maps 搜尋</a></div></div></div>
+      <div class="ev updated">
+        <div class="time">20:00</div><div class="icon">🍢</div>
+        <div class="content">
+          <div class="t">晚餐：島唄 Live 屋台村 Ashibina<span class="tag">已確認</span></div>
+          <div class="d">國際通屋台村夜市，多攤位沖繩料理＋live 演奏氛圍</div><div class="addr">📍 沖縄県那覇市牧志3-11-17 ・ <a href="https://www.google.com/maps/search/?api=1&query=%E5%B3%B6%E5%94%84%E3%83%A9%E3%82%A4%E3%83%96%E5%B1%85%E9%85%92%E5%B1%8B%20%E3%81%82%E3%81%97%E3%81%B3%E3%81%AA%E3%83%BC" target="_blank" rel="noopener">Google Maps 搜尋</a></div><div class="park">🅿️ 附近無專用停車場，可用 タイムズ牧志2丁目（24hr・9台）或 嘉数有料駐車場（150台・最大約600–900円）。週日11:00–18:00國際通封街，注意繞路</div>
+          <div class="conf">7 人・晚上 8:00（JST）</div>
+        </div>
+      </div>
+      <div class="ev"><div class="time">21:15後</div><div class="icon">🛍️</div><div class="content"><div class="t">藥妝與唐吉訶德掃購物</div><div class="d">大國藥妝／札幌藥妝，唐吉訶德國際通店，採買零食、生活用品</div><div class="addr">📍 沖縄県那覇市松尾 國際通一帶 ・ <a href="https://www.google.com/maps/search/?api=1&query=Don%20Quijote%20Kokusai-dori" target="_blank" rel="noopener">Google Maps 搜尋</a></div><div class="park">🅿️ 同國際通周邊收費停車場（見晚餐備註）。週日11:00–18:00封街，開車避開這時段</div></div></div>
+    </div>
+    <div class="mini-map">
+      <span class="map-label">當日路線</span>
+      <svg viewBox="0 0 260 360" xmlns="http://www.w3.org/2000/svg" class="route-svg" role="img" aria-label="day1 route map">
+<rect x="0" y="0" width="260" height="360" rx="24" fill="#FDEFE0"/>
+<path d="M30,35 L31.4,38.6 L35,40 L31.4,41.4 L30,45 L28.6,41.4 L25,40 L28.6,38.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M230,50 L231.4,53.6 L235,55 L231.4,56.4 L230,60 L228.6,56.4 L225,55 L228.6,53.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M25,325 L26.4,328.6 L30,330 L26.4,331.4 L25,335 L23.6,331.4 L20,330 L23.6,328.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M235,295 L236.4,298.6 L240,300 L236.4,301.4 L235,305 L233.6,301.4 L230,300 L233.6,298.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M240,175 L241.4,178.6 L245,180 L241.4,181.4 L240,185 L238.6,181.4 L235,180 L238.6,178.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M132,18 C168,14 198,34 214,64 C232,92 246,118 238,150 C230,180 250,206 236,238 C224,266 232,296 204,318 C182,338 156,332 132,344 C104,356 78,344 60,320 C40,294 52,262 34,232 C18,204 26,172 30,140 C34,110 20,78 48,50 C70,26 100,22 132,18 Z" fill="#00000014" transform="translate(4,7)"/>
+<path d="M132,18 C168,14 198,34 214,64 C232,92 246,118 238,150 C230,180 250,206 236,238 C224,266 232,296 204,318 C182,338 156,332 132,344 C104,356 78,344 60,320 C40,294 52,262 34,232 C18,204 26,172 30,140 C34,110 20,78 48,50 C70,26 100,22 132,18 Z" fill="#F6C88B" stroke="#C4863B" stroke-width="3"/>
+<path d="M132,18 C168,14 198,34 214,64 C232,92 246,118 238,150 C230,180 250,206 236,238 C224,266 232,296 204,318 C182,338 156,332 132,344 C104,356 78,344 60,320 C40,294 52,262 34,232 C18,204 26,172 30,140 C34,110 20,78 48,50 C70,26 100,22 132,18 Z" fill="none" stroke="#EEB569" stroke-width="10" stroke-dasharray="0.1,26" stroke-linecap="round" opacity="0.35"/>
+<g transform="translate(70,90) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(55,155) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(210,145) scale(1.1)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(70,215) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(200,235) scale(1.1)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(190,300) scale(1.1)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(55,300) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(215,270) scale(1.1)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(132,45) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<path d="M70.0,270.0 Q70.0,270.0 91.0,246.0 Q112.0,222.0 112.0,222.0 Q112.0,222.0 132.0,195.0 Q152.0,168.0 152.0,168.0 Q152.0,168.0 174.5,128.0 Q197.0,88.0 197.0,88.0 Q197.0,88.0 172.5,103.0 Q148.0,118.0 148.0,118.0 Q148.0,118.0 150.0,143.0 Q152.0,168.0 152.0,168.0" fill="none" stroke="#00000022" stroke-width="9" stroke-linecap="round" transform="translate(1.5,2)"/>
+<path d="M70.0,270.0 Q70.0,270.0 91.0,246.0 Q112.0,222.0 112.0,222.0 Q112.0,222.0 132.0,195.0 Q152.0,168.0 152.0,168.0 Q152.0,168.0 174.5,128.0 Q197.0,88.0 197.0,88.0 Q197.0,88.0 172.5,103.0 Q148.0,118.0 148.0,118.0 Q148.0,118.0 150.0,143.0 Q152.0,168.0 152.0,168.0" fill="none" stroke="#FFFDF6" stroke-width="7" stroke-linecap="round"/>
+<g transform="translate(91.0,246.0) rotate(-48.8)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#C4863B" opacity="0.5"/></g>
+<g transform="translate(132.0,195.0) rotate(-53.5)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#C4863B" opacity="0.5"/></g>
+<g transform="translate(174.5,128.0) rotate(-60.6)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#C4863B" opacity="0.5"/></g>
+<g transform="translate(172.5,103.0) rotate(148.5)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#C4863B" opacity="0.5"/></g>
+<g transform="translate(150.0,143.0) rotate(85.4)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#C4863B" opacity="0.5"/></g>
+<circle cx="71.5" cy="272.5" r="17" fill="#00000022"/>
+<circle cx="70" cy="270" r="17" fill="#FFFFFF" stroke="#D9782E" stroke-width="3"/>
+<text x="70" y="276.5" font-size="18" text-anchor="middle">✈️</text>
+<circle cx="82" cy="258" r="7.5" fill="#D9782E" stroke="#fff" stroke-width="1.4"/>
+<text x="82" y="261" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">1</text>
+<rect x="92.0" y="259.0" width="76.0" height="22" rx="10" fill="#FFFBF2" stroke="#C4863B" stroke-width="1.6"/>
+<text x="130.0" y="275" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">那覇機場</text>
+<circle cx="113.5" cy="224.5" r="17" fill="#00000022"/>
+<circle cx="112" cy="222" r="17" fill="#FFFFFF" stroke="#D9782E" stroke-width="3"/>
+<text x="112" y="228.5" font-size="18" text-anchor="middle">🚗</text>
+<circle cx="124" cy="210" r="7.5" fill="#D9782E" stroke="#fff" stroke-width="1.4"/>
+<text x="124" y="213" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">2</text>
+<rect x="134.0" y="211.0" width="76.0" height="22" rx="10" fill="#FFFBF2" stroke="#C4863B" stroke-width="1.6"/>
+<text x="172.0" y="227" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">租車公司</text>
+<circle cx="153.5" cy="170.5" r="17" fill="#00000022"/>
+<circle cx="152" cy="168" r="17" fill="#FFFFFF" stroke="#D9782E" stroke-width="3"/>
+<text x="152" y="174.5" font-size="18" text-anchor="middle">🏨</text>
+<circle cx="164" cy="156" r="7.5" fill="#D9782E" stroke="#fff" stroke-width="1.4"/>
+<text x="164" y="159" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">3</text>
+<rect x="54.0" y="157.0" width="76.0" height="22" rx="10" fill="#FFFBF2" stroke="#C4863B" stroke-width="1.6"/>
+<text x="92.0" y="173" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">港景飯店</text>
+<circle cx="198.5" cy="90.5" r="17" fill="#00000022"/>
+<circle cx="197" cy="88" r="17" fill="#FFFFFF" stroke="#D9782E" stroke-width="3"/>
+<text x="197" y="94.5" font-size="18" text-anchor="middle">🍢</text>
+<circle cx="209" cy="76" r="7.5" fill="#D9782E" stroke="#fff" stroke-width="1.4"/>
+<text x="209" y="79" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">4</text>
+<rect x="83.5" y="72.0" width="91.5" height="22" rx="10" fill="#FFFBF2" stroke="#C4863B" stroke-width="1.6"/>
+<text x="129.2" y="88" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">屋台村夜市</text>
+<circle cx="149.5" cy="120.5" r="17" fill="#00000022"/>
+<circle cx="148" cy="118" r="17" fill="#FFFFFF" stroke="#D9782E" stroke-width="3"/>
+<text x="148" y="124.5" font-size="18" text-anchor="middle">🛍️</text>
+<circle cx="160" cy="106" r="7.5" fill="#D9782E" stroke="#fff" stroke-width="1.4"/>
+<text x="160" y="109" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">5</text>
+<rect x="65.5" y="112.0" width="60.5" height="22" rx="10" fill="#FFFBF2" stroke="#C4863B" stroke-width="1.6"/>
+<text x="95.8" y="128" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">國際通</text>
+</svg>
+    </div>
+    </div>
+  </div>
+
+  <!-- DAY 2 -->
+  <div class="day day2">
+    <div class="day-head">
+      <div class="day-num">2</div>
+      <div class="day-title">水族館 × 購物市場 × 國際通<span class="date">7/20（一）</span></div>
+    </div>
+    <div class="day-body">
+    <div class="timeline">
+      <div class="ev"><div class="time">09:00–10:00</div><div class="icon">🐧</div><div class="content"><div class="t">DMM Kariyushi 水族館</div><div class="d">開閣立即購買企鵝、水獺餵食體驗券</div><div class="addr">📍 沖縄県豊見城市豊崎3-35 ・ <a href="https://www.google.com/maps/search/?api=1&query=DMM%20Kariyushi%20Aquarium" target="_blank" rel="noopener">Google Maps 搜尋</a></div><div class="park">🅿️ iias 園區內大型免費停車場，不用另外找</div></div></div>
+      <div class="ev updated">
+        <div class="time">約12:00</div><div class="icon">🍱</div>
+        <div class="content">
+          <div class="t">午餐：iias 周邊美食街／早餐廳</div>
+          <div class="d">於 Sports Depo → iias 沖縄豐崎購物空檔就近解決</div><div class="addr">📍 沖縄県豊見城市豊崎3-35 ・ <a href="https://www.google.com/maps/search/?api=1&query=iias%20Okinawa%20Toyosaki" target="_blank" rel="noopener">Google Maps 搜尋</a></div><div class="park">🅿️ 同iias園區免費停車場</div>
+        </div>
+      </div>
+      <div class="ev"><div class="time">10:00–15:30</div><div class="icon">🛒</div><div class="content"><div class="t">Sports Depo → iias 沖縄豐崎</div><div class="d">Sports Depo／Oakley・Nike／Adidas／Mizuno・西松屋／Bic Camera／大創・AEON STYLE</div><div class="addr">📍 沖縄県豊見城市豊崎1-411 ・ <a href="https://www.google.com/maps/search/?api=1&query=Sports%20Depo%20Toyosaki" target="_blank" rel="noopener">Google Maps 搜尋</a></div><div class="park">🅿️ iias園區免費停車場</div></div></div>
+      <div class="ev"><div class="time">16:00–18:00</div><div class="icon">🐟</div><div class="content"><div class="t">第一牧志公設市場</div><div class="d">沖繩鮮魚・在地海鮮・乾貨市場</div><div class="addr">📍 沖縄県那覇市松尾2丁目10-1 ・ <a href="https://www.google.com/maps/search/?api=1&query=%E7%AC%AC%E4%B8%80%E7%89%A7%E5%BF%97%E5%85%AC%E8%A8%AD%E5%B8%82%E5%A0%B4" target="_blank" rel="noopener">Google Maps 搜尋</a></div><div class="park">🅿️ 無專用停車場，建議停國際通周邊收費停車場，走過去約5–8分鐘</div></div></div>
+      <div class="ev updated">
+        <div class="time">18:00後</div><div class="icon">🔥</div>
+        <div class="content">
+          <div class="t">晚餐：牧志市場代客烹調</div>
+          <div class="d">1 樓採購鮮魚海鮮，委託 2 樓熟食中心代客料理享用；國際通散步、可順道客製香水（THE FLAVOR DESIGN）</div><div class="addr">📍 沖縄県那覇市松尾2丁目10-1 ・ <a href="https://www.google.com/maps/search/?api=1&query=%E7%AC%AC%E4%B8%80%E7%89%A7%E5%BF%97%E5%85%AC%E8%A8%AD%E5%B8%82%E5%A0%B4" target="_blank" rel="noopener">Google Maps 搜尋</a></div><div class="park">🅿️ 同上，國際通周邊收費停車場</div>
+        </div>
+      </div>
+    </div>
+    <div class="mini-map">
+      <span class="map-label">當日路線</span>
+      <svg viewBox="0 0 260 360" xmlns="http://www.w3.org/2000/svg" class="route-svg" role="img" aria-label="day2 route map">
+<rect x="0" y="0" width="260" height="360" rx="24" fill="#E4F5EC"/>
+<path d="M30,35 L31.4,38.6 L35,40 L31.4,41.4 L30,45 L28.6,41.4 L25,40 L28.6,38.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M230,50 L231.4,53.6 L235,55 L231.4,56.4 L230,60 L228.6,56.4 L225,55 L228.6,53.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M25,325 L26.4,328.6 L30,330 L26.4,331.4 L25,335 L23.6,331.4 L20,330 L23.6,328.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M235,295 L236.4,298.6 L240,300 L236.4,301.4 L235,305 L233.6,301.4 L230,300 L233.6,298.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M240,175 L241.4,178.6 L245,180 L241.4,181.4 L240,185 L238.6,181.4 L235,180 L238.6,178.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M132,18 C168,14 198,34 214,64 C232,92 246,118 238,150 C230,180 250,206 236,238 C224,266 232,296 204,318 C182,338 156,332 132,344 C104,356 78,344 60,320 C40,294 52,262 34,232 C18,204 26,172 30,140 C34,110 20,78 48,50 C70,26 100,22 132,18 Z" fill="#00000014" transform="translate(4,7)"/>
+<path d="M132,18 C168,14 198,34 214,64 C232,92 246,118 238,150 C230,180 250,206 236,238 C224,266 232,296 204,318 C182,338 156,332 132,344 C104,356 78,344 60,320 C40,294 52,262 34,232 C18,204 26,172 30,140 C34,110 20,78 48,50 C70,26 100,22 132,18 Z" fill="#8FD4B0" stroke="#2E8F63" stroke-width="3"/>
+<path d="M132,18 C168,14 198,34 214,64 C232,92 246,118 238,150 C230,180 250,206 236,238 C224,266 232,296 204,318 C182,338 156,332 132,344 C104,356 78,344 60,320 C40,294 52,262 34,232 C18,204 26,172 30,140 C34,110 20,78 48,50 C70,26 100,22 132,18 Z" fill="none" stroke="#6FC298" stroke-width="10" stroke-dasharray="0.1,26" stroke-linecap="round" opacity="0.35"/>
+<g transform="translate(70,90) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(195,75) scale(1.1)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(55,155) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(210,145) scale(1.1)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(200,235) scale(1.1)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(190,300) scale(1.1)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(215,270) scale(1.1)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(132,45) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<path d="M172.0,128.0 Q172.0,128.0 120.0,205.0 Q68.0,282.0 68.0,282.0 Q68.0,282.0 68.0,241.0 Q68.0,200.0 68.0,200.0 Q68.0,200.0 88.0,133.0 Q108.0,66.0 108.0,66.0 Q108.0,66.0 140.0,97.0 Q172.0,128.0 172.0,128.0" fill="none" stroke="#00000022" stroke-width="9" stroke-linecap="round" transform="translate(1.5,2)"/>
+<path d="M172.0,128.0 Q172.0,128.0 120.0,205.0 Q68.0,282.0 68.0,282.0 Q68.0,282.0 68.0,241.0 Q68.0,200.0 68.0,200.0 Q68.0,200.0 88.0,133.0 Q108.0,66.0 108.0,66.0 Q108.0,66.0 140.0,97.0 Q172.0,128.0 172.0,128.0" fill="none" stroke="#FBFFFB" stroke-width="7" stroke-linecap="round"/>
+<g transform="translate(120.0,205.0) rotate(124.0)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#2E8F63" opacity="0.5"/></g>
+<g transform="translate(68.0,241.0) rotate(-90.0)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#2E8F63" opacity="0.5"/></g>
+<g transform="translate(88.0,133.0) rotate(-73.4)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#2E8F63" opacity="0.5"/></g>
+<g transform="translate(140.0,97.0) rotate(44.1)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#2E8F63" opacity="0.5"/></g>
+<circle cx="173.5" cy="130.5" r="17" fill="#00000022"/>
+<circle cx="172" cy="128" r="17" fill="#FFFFFF" stroke="#1F7A4C" stroke-width="3"/>
+<text x="172" y="134.5" font-size="18" text-anchor="middle">🏨</text>
+<circle cx="184" cy="116" r="7.5" fill="#1F7A4C" stroke="#fff" stroke-width="1.4"/>
+<text x="184" y="119" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">1</text>
+<rect x="94.0" y="117.0" width="56.0" height="22" rx="10" fill="#FFFBF2" stroke="#2E8F63" stroke-width="1.6"/>
+<text x="122.0" y="133" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">飯店</text>
+<circle cx="69.5" cy="284.5" r="17" fill="#00000022"/>
+<circle cx="68" cy="282" r="17" fill="#FFFFFF" stroke="#1F7A4C" stroke-width="3"/>
+<text x="68" y="288.5" font-size="18" text-anchor="middle">🐧</text>
+<circle cx="80" cy="270" r="7.5" fill="#1F7A4C" stroke="#fff" stroke-width="1.4"/>
+<text x="80" y="273" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">2</text>
+<rect x="90.0" y="271.0" width="107.0" height="22" rx="10" fill="#FFFBF2" stroke="#2E8F63" stroke-width="1.6"/>
+<text x="143.5" y="287" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">DMM水族館</text>
+<circle cx="69.5" cy="202.5" r="17" fill="#00000022"/>
+<circle cx="68" cy="200" r="17" fill="#FFFFFF" stroke="#1F7A4C" stroke-width="3"/>
+<text x="68" y="206.5" font-size="18" text-anchor="middle">🛍️</text>
+<circle cx="80" cy="188" r="7.5" fill="#1F7A4C" stroke="#fff" stroke-width="1.4"/>
+<text x="80" y="191" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">3</text>
+<rect x="90.0" y="189.0" width="107.0" height="22" rx="10" fill="#FFFBF2" stroke="#2E8F63" stroke-width="1.6"/>
+<text x="143.5" y="205" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">iias豐崎</text>
+<circle cx="109.5" cy="68.5" r="17" fill="#00000022"/>
+<circle cx="108" cy="66" r="17" fill="#FFFFFF" stroke="#1F7A4C" stroke-width="3"/>
+<text x="108" y="72.5" font-size="18" text-anchor="middle">🐟</text>
+<circle cx="120" cy="54" r="7.5" fill="#1F7A4C" stroke="#fff" stroke-width="1.4"/>
+<text x="120" y="57" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">4</text>
+<rect x="130.0" y="55.0" width="76.0" height="22" rx="10" fill="#FFFBF2" stroke="#2E8F63" stroke-width="1.6"/>
+<text x="168.0" y="71" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">牧志市場</text>
+</svg>
+    </div>
+    </div>
+  </div>
+
+  <!-- DAY 3 -->
+  <div class="day day3">
+    <div class="day-head">
+      <div class="day-num">3</div>
+      <div class="day-title">文化景點 × 大型購物中心 × 絕美海景公路<span class="date">7/21（二）</span></div>
+    </div>
+    <div class="day-body">
+    <div class="timeline">
+      <div class="ev"><div class="time">09:00–10:00</div><div class="icon">⛩️</div><div class="content"><div class="t">波上宮</div><div class="d">海景神社，祈求平安・那覇市若狹1丁目25-11</div><div class="addr">📍 沖縄県那覇市若狭1丁目25-11 ・ <a href="https://www.google.com/maps/search/?api=1&query=%E6%B3%A2%E4%B8%8A%E5%AE%AE" target="_blank" rel="noopener">Google Maps 搜尋</a></div><div class="park">🅿️ 免費參拜者停車場約20台，假日易滿。備用：ナビパーク波之上（13台）／那覇市波の上P（10台）</div></div></div>
+      <div class="ev"><div class="time">10:30–12:45</div><div class="icon">🕳️</div><div class="content"><div class="t">沖縄世界文化王国・玉泉洞</div><div class="d">鍾乳石洞・Eisa 表演・園區午餐選項</div><div class="addr">📍 沖縄県南城市玉城前川1336 ・ <a href="https://www.google.com/maps/search/?api=1&query=%E3%81%8A%E3%81%8D%E3%81%AA%E3%82%8F%E3%83%AF%E3%83%BC%E3%83%AB%E3%83%89" target="_blank" rel="noopener">Google Maps 搜尋</a></div><div class="park">🅿️ 園區大型免費停車場</div></div></div>
+      <div class="ev updated">
+        <div class="time">約13:00</div><div class="icon">🍽️</div>
+        <div class="content">
+          <div class="t">午餐：AEON MALL Rycom 商場內餐廳／美食街</div>
+          <div class="d">賣可夢中心／未來屋書店周邊用餐區</div><div class="addr">📍 沖縄県中頭郡北中城村ライカム1番地 ・ <a href="https://www.google.com/maps/search/?api=1&query=AEON%20MALL%20Okinawa%20Rycom" target="_blank" rel="noopener">Google Maps 搜尋</a></div><div class="park">🅿️ 大型免費停車場，完全不用擔心</div>
+        </div>
+      </div>
+      <div class="ev"><div class="time">13:30–15:30</div><div class="icon">🛍️</div><div class="content"><div class="t">AEON MALL Rycom</div><div class="d">A&amp;F Country／UNIQLO／AEON STYLE，辦理免稅・北中城村ライカム1番地</div><div class="addr">📍 沖縄県中頭郡北中城村ライカム1番地 ・ <a href="https://www.google.com/maps/search/?api=1&query=AEON%20MALL%20Okinawa%20Rycom" target="_blank" rel="noopener">Google Maps 搜尋</a></div><div class="park">🅿️ 大型免費停車場</div></div></div>
+      <div class="ev"><div class="time">16:00–17:30</div><div class="icon">🌉</div><div class="content"><div class="t">海中道路 → 果報崖（Kafu Banta）</div><div class="d">跨海公路・翡翠海景・雪鹽伊手作</div><div class="addr">📍 海中道路：沖縄県うるま市与那城屋慶名／果報崖：沖縄県うるま市屋慶名2768 ・ <a href="https://www.google.com/maps/search/?api=1&query=%E6%B5%B7%E4%B8%AD%E9%81%93%E8%B7%AF%20Kafu%20Banta" target="_blank" rel="noopener">Google Maps 搜尋</a></div><div class="park">🅿️ 沿線休息站有免費停車場</div></div></div>
+      <div class="ev updated">
+        <div class="time">19:10</div><div class="icon">🥩</div>
+        <div class="content">
+          <div class="t">晚餐：燒肉きんぐ 那覇久茂地店<span class="tag">已確認</span></div>
+          <div class="d">確認時間 19:10，確認號碼 2151</div><div class="addr">📍 沖縄県那覇市久茂地2-15-15 ・ <a href="https://www.google.com/maps/search/?api=1&query=%E7%87%92%E8%82%89%E3%81%8D%E3%82%93%E3%81%90%E9%82%A3%E8%A6%87%E4%B9%85%E8%8C%82%E5%9C%B0%E5%BA%97" target="_blank" rel="noopener">Google Maps 搜尋</a></div><div class="park">🅿️ 無專用停車場，鄰近久茂地／國際通收費停車場，如 Dパーキング久茂地3丁目第5（29台）</div>
+          <div class="conf">7 人・訂位時間 2026/07/12 15:01</div>
+        </div>
+      </div>
+      <div class="ev"><div class="time">20:00後</div><div class="icon">🛒</div><div class="content"><div class="t">MaxValu（24 小時）</div><div class="d">採買零食、泡麵、調味料、水果</div></div></div>
+    </div>
+    <div class="mini-map">
+      <span class="map-label">當日路線</span>
+      <svg viewBox="0 0 260 360" xmlns="http://www.w3.org/2000/svg" class="route-svg" role="img" aria-label="day3 route map">
+<rect x="0" y="0" width="260" height="360" rx="24" fill="#E7F1FC"/>
+<path d="M30,35 L31.4,38.6 L35,40 L31.4,41.4 L30,45 L28.6,41.4 L25,40 L28.6,38.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M230,50 L231.4,53.6 L235,55 L231.4,56.4 L230,60 L228.6,56.4 L225,55 L228.6,53.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M25,325 L26.4,328.6 L30,330 L26.4,331.4 L25,335 L23.6,331.4 L20,330 L23.6,328.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M235,295 L236.4,298.6 L240,300 L236.4,301.4 L235,305 L233.6,301.4 L230,300 L233.6,298.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M240,175 L241.4,178.6 L245,180 L241.4,181.4 L240,185 L238.6,181.4 L235,180 L238.6,178.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M132,18 C168,14 198,34 214,64 C232,92 246,118 238,150 C230,180 250,206 236,238 C224,266 232,296 204,318 C182,338 156,332 132,344 C104,356 78,344 60,320 C40,294 52,262 34,232 C18,204 26,172 30,140 C34,110 20,78 48,50 C70,26 100,22 132,18 Z" fill="#00000014" transform="translate(4,7)"/>
+<path d="M132,18 C168,14 198,34 214,64 C232,92 246,118 238,150 C230,180 250,206 236,238 C224,266 232,296 204,318 C182,338 156,332 132,344 C104,356 78,344 60,320 C40,294 52,262 34,232 C18,204 26,172 30,140 C34,110 20,78 48,50 C70,26 100,22 132,18 Z" fill="#8FC5F0" stroke="#2F6FAE" stroke-width="3"/>
+<path d="M132,18 C168,14 198,34 214,64 C232,92 246,118 238,150 C230,180 250,206 236,238 C224,266 232,296 204,318 C182,338 156,332 132,344 C104,356 78,344 60,320 C40,294 52,262 34,232 C18,204 26,172 30,140 C34,110 20,78 48,50 C70,26 100,22 132,18 Z" fill="none" stroke="#6BA9DE" stroke-width="10" stroke-dasharray="0.1,26" stroke-linecap="round" opacity="0.35"/>
+<g transform="translate(70,90) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(195,75) scale(1.1)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(55,155) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(210,145) scale(1.1)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(70,215) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(200,235) scale(1.1)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(85,285) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(190,300) scale(1.1)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(55,300) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(215,270) scale(1.1)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(132,45) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<path d="M138.0,210.0 Q138.0,210.0 96.5,197.5 Q55.0,185.0 55.0,185.0 Q55.0,185.0 86.5,242.5 Q118.0,300.0 118.0,300.0 Q118.0,300.0 149.0,275.0 Q180.0,250.0 180.0,250.0 Q180.0,250.0 193.0,180.0 Q206.0,110.0 206.0,110.0 Q206.0,110.0 216.0,89.0 Q226.0,68.0 226.0,68.0 Q226.0,68.0 194.0,53.0 Q162.0,38.0 162.0,38.0 Q162.0,38.0 150.0,65.5 Q138.0,93.0 138.0,93.0 Q138.0,93.0 138.0,151.5 Q138.0,210.0 138.0,210.0" fill="none" stroke="#00000022" stroke-width="9" stroke-linecap="round" transform="translate(1.5,2)"/>
+<path d="M138.0,210.0 Q138.0,210.0 96.5,197.5 Q55.0,185.0 55.0,185.0 Q55.0,185.0 86.5,242.5 Q118.0,300.0 118.0,300.0 Q118.0,300.0 149.0,275.0 Q180.0,250.0 180.0,250.0 Q180.0,250.0 193.0,180.0 Q206.0,110.0 206.0,110.0 Q206.0,110.0 216.0,89.0 Q226.0,68.0 226.0,68.0 Q226.0,68.0 194.0,53.0 Q162.0,38.0 162.0,38.0 Q162.0,38.0 150.0,65.5 Q138.0,93.0 138.0,93.0 Q138.0,93.0 138.0,151.5 Q138.0,210.0 138.0,210.0" fill="none" stroke="#FBFEFF" stroke-width="7" stroke-linecap="round"/>
+<g transform="translate(96.5,197.5) rotate(-163.2)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#2F6FAE" opacity="0.5"/></g>
+<g transform="translate(86.5,242.5) rotate(61.3)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#2F6FAE" opacity="0.5"/></g>
+<g transform="translate(149.0,275.0) rotate(-38.9)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#2F6FAE" opacity="0.5"/></g>
+<g transform="translate(193.0,180.0) rotate(-79.5)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#2F6FAE" opacity="0.5"/></g>
+<g transform="translate(216.0,89.0) rotate(-64.5)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#2F6FAE" opacity="0.5"/></g>
+<g transform="translate(194.0,53.0) rotate(-154.9)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#2F6FAE" opacity="0.5"/></g>
+<g transform="translate(150.0,65.5) rotate(113.6)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#2F6FAE" opacity="0.5"/></g>
+<g transform="translate(138.0,151.5) rotate(90.0)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#2F6FAE" opacity="0.5"/></g>
+<circle cx="139.5" cy="212.5" r="17" fill="#00000022"/>
+<circle cx="138" cy="210" r="17" fill="#FFFFFF" stroke="#1F5FA8" stroke-width="3"/>
+<text x="138" y="216.5" font-size="18" text-anchor="middle">🏨</text>
+<circle cx="150" cy="198" r="7.5" fill="#1F5FA8" stroke="#fff" stroke-width="1.4"/>
+<text x="150" y="201" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">1</text>
+<rect x="160.0" y="199.0" width="56.0" height="22" rx="10" fill="#FFFBF2" stroke="#2F6FAE" stroke-width="1.6"/>
+<text x="188.0" y="215" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">飯店</text>
+<circle cx="56.5" cy="187.5" r="17" fill="#00000022"/>
+<circle cx="55" cy="185" r="17" fill="#FFFFFF" stroke="#1F5FA8" stroke-width="3"/>
+<text x="55" y="191.5" font-size="18" text-anchor="middle">⛩️</text>
+<circle cx="67" cy="173" r="7.5" fill="#1F5FA8" stroke="#fff" stroke-width="1.4"/>
+<text x="67" y="176" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">2</text>
+<rect x="77.0" y="168.0" width="60.5" height="22" rx="10" fill="#FFFBF2" stroke="#2F6FAE" stroke-width="1.6"/>
+<text x="107.2" y="184" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">波上宮</text>
+<circle cx="119.5" cy="302.5" r="17" fill="#00000022"/>
+<circle cx="118" cy="300" r="17" fill="#FFFFFF" stroke="#1F5FA8" stroke-width="3"/>
+<text x="118" y="306.5" font-size="18" text-anchor="middle">🕳️</text>
+<circle cx="130" cy="288" r="7.5" fill="#1F5FA8" stroke="#fff" stroke-width="1.4"/>
+<text x="130" y="291" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">3</text>
+<rect x="140.0" y="289.0" width="60.5" height="22" rx="10" fill="#FFFBF2" stroke="#2F6FAE" stroke-width="1.6"/>
+<text x="170.2" y="305" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">玉泉洞</text>
+<circle cx="207.5" cy="112.5" r="17" fill="#00000022"/>
+<circle cx="206" cy="110" r="17" fill="#FFFFFF" stroke="#1F5FA8" stroke-width="3"/>
+<text x="206" y="116.5" font-size="18" text-anchor="middle">🛍️</text>
+<circle cx="218" cy="98" r="7.5" fill="#1F5FA8" stroke="#fff" stroke-width="1.4"/>
+<text x="218" y="101" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">4</text>
+<rect x="123.5" y="114.0" width="60.5" height="22" rx="10" fill="#FFFBF2" stroke="#2F6FAE" stroke-width="1.6"/>
+<text x="153.8" y="130" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">永樂旺</text>
+<circle cx="227.5" cy="70.5" r="17" fill="#00000022"/>
+<circle cx="226" cy="68" r="17" fill="#FFFFFF" stroke="#1F5FA8" stroke-width="3"/>
+<text x="226" y="74.5" font-size="18" text-anchor="middle">🌉</text>
+<circle cx="238" cy="56" r="7.5" fill="#1F5FA8" stroke="#fff" stroke-width="1.4"/>
+<text x="238" y="59" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">5</text>
+<rect x="128.0" y="51.0" width="76.0" height="22" rx="10" fill="#FFFBF2" stroke="#2F6FAE" stroke-width="1.6"/>
+<text x="166.0" y="67" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">海中道路</text>
+<circle cx="163.5" cy="40.5" r="17" fill="#00000022"/>
+<circle cx="162" cy="38" r="17" fill="#FFFFFF" stroke="#1F5FA8" stroke-width="3"/>
+<text x="162" y="44.5" font-size="18" text-anchor="middle">🍧</text>
+<circle cx="174" cy="26" r="7.5" fill="#1F5FA8" stroke="#fff" stroke-width="1.4"/>
+<text x="174" y="29" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">6</text>
+<rect x="79.5" y="27.0" width="60.5" height="22" rx="10" fill="#FFFBF2" stroke="#2F6FAE" stroke-width="1.6"/>
+<text x="109.8" y="43" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">果報崖</text>
+<circle cx="139.5" cy="95.5" r="17" fill="#00000022"/>
+<circle cx="138" cy="93" r="17" fill="#FFFFFF" stroke="#1F5FA8" stroke-width="3"/>
+<text x="138" y="99.5" font-size="18" text-anchor="middle">🥩</text>
+<circle cx="150" cy="81" r="7.5" fill="#1F5FA8" stroke="#fff" stroke-width="1.4"/>
+<text x="150" y="84" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">7</text>
+<rect x="24.5" y="82.0" width="91.5" height="22" rx="10" fill="#FFFBF2" stroke="#2F6FAE" stroke-width="1.6"/>
+<text x="70.2" y="98" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">燒肉きんぐ</text>
+</svg>
+    </div>
+    </div>
+  </div>
+
+  <!-- DAY 4 -->
+  <div class="day day4">
+    <div class="day-head">
+      <div class="day-num">4</div>
+      <div class="day-title">玻璃獨木舟 × 海灘渡假放鬆一整天<span class="date">7/22（三）</span></div>
+    </div>
+    <div class="day-body">
+    <div class="timeline">
+      <div class="ev"><div class="time">08:30</div><div class="icon">🚙</div><div class="content"><div class="t">那覇出發</div><div class="d">前往瀨底島，途中可便利商店購買早餐</div><div class="addr">📍 沖縄県那覇市泉崎2-46 ・ <a href="https://www.google.com/maps/search/?api=1&query=Okinawa%20Harborview%20Hotel" target="_blank" rel="noopener">Google Maps 搜尋</a></div></div></div>
+      <div class="ev"><div class="time">10:30–12:00</div><div class="icon">🛶</div><div class="content"><div class="t">瀬底島玻璃獨木舟</div><div class="d">透明玻璃獨木舟，珊瑚礁、熱帶魚拍照留念</div><div class="addr">📍 沖縄県国頭郡本部町瀬底583-1 ・ <a href="https://www.google.com/maps/search/?api=1&query=COSMIC%20OCEAN" target="_blank" rel="noopener">Google Maps 搜尋</a></div><div class="park">🅿️ COSMIC OCEAN 店家附免費停車場，不用擔心</div><div class="d">⚠️ 衣服可能會弄濕，建議穿泳衣或攜帶換洗衣物</div></div></div>
+      <div class="ev updated">
+        <div class="time">13:00–14:15</div><div class="icon">🦐</div>
+        <div class="content">
+          <div class="t">午餐：濱の家 海鮮料理<span class="tag">已確認</span></div>
+          <div class="d">蒜香奶油烤蝦・海鮮丼・思納村泊城2097</div><div class="addr">📍 沖縄県国頭郡恩納村仲泊2097 ・ <a href="https://www.google.com/maps/search/?api=1&query=%E6%B5%9C%E3%81%AE%E5%AE%B6" target="_blank" rel="noopener">Google Maps 搜尋</a></div><div class="park">🅿️ 店家專用停車場約6–13台，中午用餐時段易滿。備用：隔壁「おんなの駅」大型免費停車場，走約2–3分鐘</div>
+        </div>
+      </div>
+      <div class="ev"><div class="time">14:45–15:45</div><div class="icon">☕</div><div class="content"><div class="t">萬座海灘附近咖啡廳</div><div class="d">下午茶、休息、吹海風</div><div class="addr">📍 沖縄県国頭郡恩納村瀬良垣 萬座海灘周邊 ・ <a href="https://www.google.com/maps/search/?api=1&query=Manza%20Beach%20area%20cafe" target="_blank" rel="noopener">Google Maps 搜尋</a></div><div class="park">🅿️ 萬座周邊，7–9月旺季停車約500–1000円/台</div></div></div>
+      <div class="ev"><div class="time">16:00–18:00</div><div class="icon">🏖️</div><div class="content"><div class="t">萬座海灘</div><div class="d">游泳／玩沙／看夕陽，自由活動</div><div class="addr">📍 沖縄県国頭郡恩納村瀬良垣2260 ・ <a href="https://www.google.com/maps/search/?api=1&query=Manza%20Beach" target="_blank" rel="noopener">Google Maps 搜尋</a></div><div class="park">🅿️ 旺季(7/1–9/30)付費約500–1000円/台。備用：南側「恩納村海浜公園ナビービーチ」免費200台</div></div></div>
+      <div class="ev"><div class="time">18:00–18:30</div><div class="icon">🚿</div><div class="content"><div class="t">盥洗、更衣</div><div class="d">於盥洗室沖洗，更換乾淨衣物</div></div></div>
+      <div class="ev updated">
+        <div class="time">19:00</div><div class="icon">🍥</div>
+        <div class="content">
+          <div class="t">晚餐：沖縄とんかつ食堂 しゃぶ豚屋 久茂地店<span class="tag">已確認</span></div>
+          <div class="d">2-10-20 Kumoji, #101 Hakuba.M, Naha・098-988-3909</div><div class="addr">📍 2-10-20 Kumoji, #101 Hakuba.M, Naha ・ <a href="https://www.google.com/maps/search/?api=1&query=%E3%81%97%E3%82%83%E3%81%B6%E8%B1%9A%E5%B1%8B%20%E4%B9%85%E8%8C%82%E5%9C%B0%E5%BA%97" target="_blank" rel="noopener">Google Maps 搜尋</a></div><div class="park">🅿️ 無專用停車場，同久茂地周邊收費停車場</div>
+          <div class="d">🐖 招牌為知名阿古豬炸豬排，可搭配相關套餐（如里肌／腰內肉炸豬排、涮涮鍋等）</div>
+          <div class="conf">7 人・Reservation ID: RK6C5V</div>
+        </div>
+      </div>
+    </div>
+    <div class="mini-map">
+      <span class="map-label">當日路線</span>
+      <svg viewBox="0 0 260 360" xmlns="http://www.w3.org/2000/svg" class="route-svg" role="img" aria-label="day4 route map">
+<rect x="0" y="0" width="260" height="360" rx="24" fill="#E2F5F3"/>
+<path d="M30,35 L31.4,38.6 L35,40 L31.4,41.4 L30,45 L28.6,41.4 L25,40 L28.6,38.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M230,50 L231.4,53.6 L235,55 L231.4,56.4 L230,60 L228.6,56.4 L225,55 L228.6,53.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M25,325 L26.4,328.6 L30,330 L26.4,331.4 L25,335 L23.6,331.4 L20,330 L23.6,328.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M235,295 L236.4,298.6 L240,300 L236.4,301.4 L235,305 L233.6,301.4 L230,300 L233.6,298.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M240,175 L241.4,178.6 L245,180 L241.4,181.4 L240,185 L238.6,181.4 L235,180 L238.6,178.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M132,18 C168,14 198,34 214,64 C232,92 246,118 238,150 C230,180 250,206 236,238 C224,266 232,296 204,318 C182,338 156,332 132,344 C104,356 78,344 60,320 C40,294 52,262 34,232 C18,204 26,172 30,140 C34,110 20,78 48,50 C70,26 100,22 132,18 Z" fill="#00000014" transform="translate(4,7)"/>
+<path d="M132,18 C168,14 198,34 214,64 C232,92 246,118 238,150 C230,180 250,206 236,238 C224,266 232,296 204,318 C182,338 156,332 132,344 C104,356 78,344 60,320 C40,294 52,262 34,232 C18,204 26,172 30,140 C34,110 20,78 48,50 C70,26 100,22 132,18 Z" fill="#7ED1CB" stroke="#1D7C74" stroke-width="3"/>
+<path d="M132,18 C168,14 198,34 214,64 C232,92 246,118 238,150 C230,180 250,206 236,238 C224,266 232,296 204,318 C182,338 156,332 132,344 C104,356 78,344 60,320 C40,294 52,262 34,232 C18,204 26,172 30,140 C34,110 20,78 48,50 C70,26 100,22 132,18 Z" fill="none" stroke="#57B9B1" stroke-width="10" stroke-dasharray="0.1,26" stroke-linecap="round" opacity="0.35"/>
+<g transform="translate(70,90) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(210,145) scale(1.1)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(70,215) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(200,235) scale(1.1)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(85,285) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(190,300) scale(1.1)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(55,300) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(215,270) scale(1.1)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(132,45) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<path d="M150.0,302.0 Q150.0,302.0 173.5,178.0 Q197.0,54.0 197.0,54.0 Q197.0,54.0 161.0,67.0 Q125.0,80.0 125.0,80.0 Q125.0,80.0 98.5,123.0 Q72.0,166.0 72.0,166.0 Q72.0,166.0 111.0,135.0 Q150.0,104.0 150.0,104.0 Q150.0,104.0 107.0,177.0 Q64.0,250.0 64.0,250.0 Q64.0,250.0 107.0,276.0 Q150.0,302.0 150.0,302.0" fill="none" stroke="#00000022" stroke-width="9" stroke-linecap="round" transform="translate(1.5,2)"/>
+<path d="M150.0,302.0 Q150.0,302.0 173.5,178.0 Q197.0,54.0 197.0,54.0 Q197.0,54.0 161.0,67.0 Q125.0,80.0 125.0,80.0 Q125.0,80.0 98.5,123.0 Q72.0,166.0 72.0,166.0 Q72.0,166.0 111.0,135.0 Q150.0,104.0 150.0,104.0 Q150.0,104.0 107.0,177.0 Q64.0,250.0 64.0,250.0 Q64.0,250.0 107.0,276.0 Q150.0,302.0 150.0,302.0" fill="none" stroke="#FBFFFE" stroke-width="7" stroke-linecap="round"/>
+<g transform="translate(173.5,178.0) rotate(-79.3)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#1D7C74" opacity="0.5"/></g>
+<g transform="translate(161.0,67.0) rotate(160.1)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#1D7C74" opacity="0.5"/></g>
+<g transform="translate(98.5,123.0) rotate(121.6)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#1D7C74" opacity="0.5"/></g>
+<g transform="translate(111.0,135.0) rotate(-38.5)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#1D7C74" opacity="0.5"/></g>
+<g transform="translate(107.0,177.0) rotate(120.5)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#1D7C74" opacity="0.5"/></g>
+<g transform="translate(107.0,276.0) rotate(31.2)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#1D7C74" opacity="0.5"/></g>
+<circle cx="151.5" cy="304.5" r="17" fill="#00000022"/>
+<circle cx="150" cy="302" r="17" fill="#FFFFFF" stroke="#136B63" stroke-width="3"/>
+<text x="150" y="308.5" font-size="18" text-anchor="middle">🏨</text>
+<circle cx="162" cy="290" r="7.5" fill="#136B63" stroke="#fff" stroke-width="1.4"/>
+<text x="162" y="293" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">1</text>
+<rect x="72.0" y="291.0" width="56.0" height="22" rx="10" fill="#FFFBF2" stroke="#1D7C74" stroke-width="1.6"/>
+<text x="100.0" y="307" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">飯店</text>
+<circle cx="198.5" cy="56.5" r="17" fill="#00000022"/>
+<circle cx="197" cy="54" r="17" fill="#FFFFFF" stroke="#136B63" stroke-width="3"/>
+<text x="197" y="60.5" font-size="18" text-anchor="middle">🛶</text>
+<circle cx="209" cy="42" r="7.5" fill="#136B63" stroke="#fff" stroke-width="1.4"/>
+<text x="209" y="45" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">2</text>
+<rect x="114.5" y="43.0" width="60.5" height="22" rx="10" fill="#FFFBF2" stroke="#1D7C74" stroke-width="1.6"/>
+<text x="144.8" y="59" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">瀬底島</text>
+<circle cx="73.5" cy="168.5" r="17" fill="#00000022"/>
+<circle cx="72" cy="166" r="17" fill="#FFFFFF" stroke="#136B63" stroke-width="3"/>
+<text x="72" y="172.5" font-size="18" text-anchor="middle">🦐</text>
+<circle cx="84" cy="154" r="7.5" fill="#136B63" stroke="#fff" stroke-width="1.4"/>
+<text x="84" y="157" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">3</text>
+<rect x="94.0" y="155.0" width="60.5" height="22" rx="10" fill="#FFFBF2" stroke="#1D7C74" stroke-width="1.6"/>
+<text x="124.2" y="171" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">浜の家</text>
+<circle cx="151.5" cy="106.5" r="17" fill="#00000022"/>
+<circle cx="150" cy="104" r="17" fill="#FFFFFF" stroke="#136B63" stroke-width="3"/>
+<text x="150" y="110.5" font-size="18" text-anchor="middle">🏖️</text>
+<circle cx="162" cy="92" r="7.5" fill="#136B63" stroke="#fff" stroke-width="1.4"/>
+<text x="162" y="95" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">4</text>
+<rect x="52.0" y="93.0" width="76.0" height="22" rx="10" fill="#FFFBF2" stroke="#1D7C74" stroke-width="1.6"/>
+<text x="90.0" y="109" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">萬座海灘</text>
+<circle cx="65.5" cy="252.5" r="17" fill="#00000022"/>
+<circle cx="64" cy="250" r="17" fill="#FFFFFF" stroke="#136B63" stroke-width="3"/>
+<text x="64" y="256.5" font-size="18" text-anchor="middle">🍥</text>
+<circle cx="76" cy="238" r="7.5" fill="#136B63" stroke="#fff" stroke-width="1.4"/>
+<text x="76" y="241" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">5</text>
+<rect x="86.0" y="239.0" width="91.5" height="22" rx="10" fill="#FFFBF2" stroke="#1D7C74" stroke-width="1.6"/>
+<text x="131.8" y="255" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">しゃぶ豚屋</text>
+</svg>
+    </div>
+    </div>
+  </div>
+
+  <!-- DAY 5 -->
+  <div class="day day5">
+    <div class="day-head">
+      <div class="day-num">5</div>
+      <div class="day-title">悠閒早晨 × 瀬長島 → 還車 → 返台<span class="date">7/23（四）</span></div>
+    </div>
+    <div class="day-body">
+    <div class="timeline">
+      <div class="ev"><div class="time">08:30–09:45</div><div class="icon">🍳</div><div class="content"><div class="t">飯店早餐、退房</div><div class="d">享用飯店早餐，整理行李</div><div class="addr">📍 沖縄県那覇市泉崎2-46 ・ <a href="https://www.google.com/maps/search/?api=1&query=Okinawa%20Harborview%20Hotel" target="_blank" rel="noopener">Google Maps 搜尋</a></div></div></div>
+      <div class="ev"><div class="time">10:05–11:30</div><div class="icon">🌅</div><div class="content"><div class="t">瀬長島 Umikaji Terrace</div><div class="d">看飛機、喝咖啡、看海拍照・豐見城市瀬長174-6</div><div class="addr">📍 沖縄県豊見城市瀬長174-6 ・ <a href="https://www.google.com/maps/search/?api=1&query=%E7%80%AC%E9%95%B7%E5%B3%B6%E3%82%A6%E3%83%9F%E3%82%AB%E3%82%B8%E3%83%86%E3%83%A9%E3%82%B9" target="_blank" rel="noopener">Google Maps 搜尋</a></div><div class="park">🅿️ 大型免費停車場，不用擔心</div></div></div>
+      <div class="ev"><div class="time">11:30–12:15</div><div class="icon">⛽</div><div class="content"><div class="t">加油、還車</div><div class="d">加滿油後前往小祿金城店還車</div><div class="addr">📍 沖縄県那覇市金城1丁目12-27 ・ <a href="https://www.google.com/maps/search/?api=1&query=Okinawa%20Rent%20A%20Car%20Kanagusuku" target="_blank" rel="noopener">Google Maps 搜尋</a></div></div></div>
+      <div class="ev"><div class="time">12:30後</div><div class="icon">🛫</div><div class="content"><div class="t">那覇機場</div><div class="d">辦理登機、免稅店採購，等候16:45班機返台</div><div class="addr">📍 沖縄県那覇市鏡水150 ・ <a href="https://www.google.com/maps/search/?api=1&query=Naha%20Airport" target="_blank" rel="noopener">Google Maps 搜尋</a></div></div></div>
+    </div>
+    <div class="mini-map">
+      <span class="map-label">當日路線</span>
+      <svg viewBox="0 0 260 360" xmlns="http://www.w3.org/2000/svg" class="route-svg" role="img" aria-label="day5 route map">
+<rect x="0" y="0" width="260" height="360" rx="24" fill="#EBEEF3"/>
+<path d="M30,35 L31.4,38.6 L35,40 L31.4,41.4 L30,45 L28.6,41.4 L25,40 L28.6,38.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M230,50 L231.4,53.6 L235,55 L231.4,56.4 L230,60 L228.6,56.4 L225,55 L228.6,53.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M25,325 L26.4,328.6 L30,330 L26.4,331.4 L25,335 L23.6,331.4 L20,330 L23.6,328.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M235,295 L236.4,298.6 L240,300 L236.4,301.4 L235,305 L233.6,301.4 L230,300 L233.6,298.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M240,175 L241.4,178.6 L245,180 L241.4,181.4 L240,185 L238.6,181.4 L235,180 L238.6,178.6 Z" fill="#ffffff" opacity="0.55"/>
+<path d="M132,18 C168,14 198,34 214,64 C232,92 246,118 238,150 C230,180 250,206 236,238 C224,266 232,296 204,318 C182,338 156,332 132,344 C104,356 78,344 60,320 C40,294 52,262 34,232 C18,204 26,172 30,140 C34,110 20,78 48,50 C70,26 100,22 132,18 Z" fill="#00000014" transform="translate(4,7)"/>
+<path d="M132,18 C168,14 198,34 214,64 C232,92 246,118 238,150 C230,180 250,206 236,238 C224,266 232,296 204,318 C182,338 156,332 132,344 C104,356 78,344 60,320 C40,294 52,262 34,232 C18,204 26,172 30,140 C34,110 20,78 48,50 C70,26 100,22 132,18 Z" fill="#A9B4C4" stroke="#3F4B5E" stroke-width="3"/>
+<path d="M132,18 C168,14 198,34 214,64 C232,92 246,118 238,150 C230,180 250,206 236,238 C224,266 232,296 204,318 C182,338 156,332 132,344 C104,356 78,344 60,320 C40,294 52,262 34,232 C18,204 26,172 30,140 C34,110 20,78 48,50 C70,26 100,22 132,18 Z" fill="none" stroke="#8B97AC" stroke-width="10" stroke-dasharray="0.1,26" stroke-linecap="round" opacity="0.35"/>
+<g transform="translate(70,90) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(195,75) scale(1.1)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(55,155) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(210,145) scale(1.1)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(70,215) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(190,300) scale(1.1)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(55,300) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(215,270) scale(1.1)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<g transform="translate(132,45) scale(0.9)"><ellipse cx="0" cy="6" rx="6" ry="2" fill="#00000022"/><circle cx="0" cy="-3" r="6.5" fill="#5FAE6B"/><circle cx="-4" cy="0" r="5" fill="#4E9A5B"/><circle cx="4" cy="0" r="5" fill="#4E9A5B"/><rect x="-1.5" y="3" width="3" height="5" fill="#8A5A34"/></g>
+<path d="M190.0,225.0 Q190.0,225.0 142.5,260.0 Q95.0,295.0 95.0,295.0 Q95.0,295.0 95.0,220.0 Q95.0,145.0 95.0,145.0 Q95.0,145.0 95.0,120.0 Q95.0,95.0 95.0,95.0" fill="none" stroke="#00000022" stroke-width="9" stroke-linecap="round" transform="translate(1.5,2)"/>
+<path d="M190.0,225.0 Q190.0,225.0 142.5,260.0 Q95.0,295.0 95.0,295.0 Q95.0,295.0 95.0,220.0 Q95.0,145.0 95.0,145.0 Q95.0,145.0 95.0,120.0 Q95.0,95.0 95.0,95.0" fill="none" stroke="#FDFDFE" stroke-width="7" stroke-linecap="round"/>
+<g transform="translate(142.5,260.0) rotate(143.6)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#3F4B5E" opacity="0.5"/></g>
+<g transform="translate(95.0,220.0) rotate(-90.0)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#3F4B5E" opacity="0.5"/></g>
+<g transform="translate(95.0,120.0) rotate(-90.0)"><path d="M-5,-4 L6,0 L-5,4 Z" fill="#3F4B5E" opacity="0.5"/></g>
+<circle cx="191.5" cy="227.5" r="17" fill="#00000022"/>
+<circle cx="190" cy="225" r="17" fill="#FFFFFF" stroke="#2C3E50" stroke-width="3"/>
+<text x="190" y="231.5" font-size="18" text-anchor="middle">🍳</text>
+<circle cx="202" cy="213" r="7.5" fill="#2C3E50" stroke="#fff" stroke-width="1.4"/>
+<text x="202" y="216" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">1</text>
+<rect x="112.0" y="214.0" width="56.0" height="22" rx="10" fill="#FFFBF2" stroke="#3F4B5E" stroke-width="1.6"/>
+<text x="140.0" y="230" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">飯店</text>
+<circle cx="96.5" cy="297.5" r="17" fill="#00000022"/>
+<circle cx="95" cy="295" r="17" fill="#FFFFFF" stroke="#2C3E50" stroke-width="3"/>
+<text x="95" y="301.5" font-size="18" text-anchor="middle">🌅</text>
+<circle cx="107" cy="283" r="7.5" fill="#2C3E50" stroke="#fff" stroke-width="1.4"/>
+<text x="107" y="286" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">2</text>
+<rect x="117.0" y="284.0" width="60.5" height="22" rx="10" fill="#FFFBF2" stroke="#3F4B5E" stroke-width="1.6"/>
+<text x="147.2" y="300" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">瀬長島</text>
+<circle cx="96.5" cy="147.5" r="17" fill="#00000022"/>
+<circle cx="95" cy="145" r="17" fill="#FFFFFF" stroke="#2C3E50" stroke-width="3"/>
+<text x="95" y="151.5" font-size="18" text-anchor="middle">⛽</text>
+<circle cx="107" cy="133" r="7.5" fill="#2C3E50" stroke="#fff" stroke-width="1.4"/>
+<text x="107" y="136" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">3</text>
+<rect x="17.0" y="134.0" width="56.0" height="22" rx="10" fill="#FFFBF2" stroke="#3F4B5E" stroke-width="1.6"/>
+<text x="45.0" y="150" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">還車</text>
+<circle cx="96.5" cy="97.5" r="17" fill="#00000022"/>
+<circle cx="95" cy="95" r="17" fill="#FFFFFF" stroke="#2C3E50" stroke-width="3"/>
+<text x="95" y="101.5" font-size="18" text-anchor="middle">🛫</text>
+<circle cx="107" cy="83" r="7.5" fill="#2C3E50" stroke="#fff" stroke-width="1.4"/>
+<text x="107" y="86" font-size="9.5" fill="#fff" text-anchor="middle" font-weight="700">4</text>
+<rect x="117.0" y="84.0" width="76.0" height="22" rx="10" fill="#FFFBF2" stroke="#3F4B5E" stroke-width="1.6"/>
+<text x="155.0" y="100" font-size="14.5" font-weight="700" fill="#4A3624" text-anchor="middle" font-family="Noto Sans TC, Noto Sans CJK TC, sans-serif">那覇機場</text>
+</svg>
+    </div>
+    </div>
+  </div>
+
+  <footer class="note">🐯 已將 4 筆訂位確認 + 3 項用餐地點更新整合進行程表</footer>
+
+</div>
+</body>
+</html>
